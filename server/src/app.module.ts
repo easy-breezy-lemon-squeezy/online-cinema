@@ -5,6 +5,7 @@ import { AppService } from './app.service'
 import { getMongoConfig } from './config/mongo.config'
 import { TypegooseModule } from 'nestjs-typegoose'
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
       useFactory: getMongoConfig,
     }),
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
