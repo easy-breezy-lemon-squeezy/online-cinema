@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { ModelType, DocumentType } from '@typegoose/typegoose/lib/types'
 import { Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
@@ -39,7 +39,9 @@ export class GenreService {
 	}
 
 	async bySlug(slug: string): Promise<DocumentType<GenreModel>> {
-		return this.genreModel.findOne({ slug }).exec()
+		const genre = await this.genreModel.findOne({ slug }).exec()
+		if (!genre) throw new NotFoundException('Genre not found')
+		return genre
 	}
 
 	async getPopular(): Promise<DocumentType<GenreModel>[]> {
@@ -60,7 +62,10 @@ export class GenreService {
 	/* Admin area */
 
 	async byId(id: string): Promise<DocumentType<GenreModel>> {
-		return this.genreModel.findById(id).exec()
+		const genre = await this.genreModel.findById(id)
+
+		if (!genre) throw new NotFoundException('Genre not found')
+		return genre
 	}
 
 	async create(): Promise<Types.ObjectId> {
