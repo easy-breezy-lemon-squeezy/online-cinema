@@ -83,10 +83,16 @@ export class GenreService {
 		id: string,
 		dto: CreateGenreDto
 	): Promise<DocumentType<GenreModel> | null> {
-		return this.genreModel.findByIdAndUpdate(id, dto, { new: true }).exec()
+		const updateDoc = await this.genreModel
+			.findByIdAndUpdate(id, dto, { new: true })
+			.exec()
+		if (!updateDoc) throw new NotFoundException('Genre not found')
+		return updateDoc
 	}
 
 	async delete(id: string): Promise<DocumentType<GenreModel> | null> {
-		return this.genreModel.findByIdAndDelete(id).exec()
+		const doc = await this.genreModel.findByIdAndDelete(id).exec()
+		if (!doc) throw new NotFoundException('Genre not found')
+		return doc
 	}
 }

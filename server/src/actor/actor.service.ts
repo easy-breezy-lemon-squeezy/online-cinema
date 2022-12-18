@@ -63,10 +63,16 @@ export class ActorService {
 		id: string,
 		dto: CreateActorDto
 	): Promise<DocumentType<ActorModel> | null> {
-		return this.actorModel.findByIdAndUpdate(id, dto, { new: true }).exec()
+		const doc = await this.actorModel
+			.findByIdAndUpdate(id, dto, { new: true })
+			.exec()
+		if (!doc) throw new NotFoundException('Actor not found')
+		return doc
 	}
 
 	async delete(id: string): Promise<DocumentType<ActorModel> | null> {
-		return this.actorModel.findByIdAndDelete(id).exec()
+		const doc = await this.actorModel.findByIdAndDelete(id).exec()
+		if (!doc) throw new NotFoundException('Actor not found')
+		return doc
 	}
 }
