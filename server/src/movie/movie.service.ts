@@ -80,6 +80,12 @@ export class MovieService {
 			.exec()
 	}
 
+	async updateRating(id: Types.ObjectId, newRating: number) {
+		return this.movieModel
+			.findByIdAndUpdate(id, { rating: newRating }, { new: true })
+			.exec()
+	}
+
 	/* Admin area */
 
 	async byId(id: string): Promise<DocumentType<MovieModel>> {
@@ -115,14 +121,6 @@ export class MovieService {
 
 	async delete(id: string): Promise<DocumentType<MovieModel> | null> {
 		const doc = await this.movieModel.findByIdAndDelete(id).exec()
-		if (!doc) throw new NotFoundException('Movie not found')
-		return doc
-	}
-
-	async updateRating(id: string, newRating: number) {
-		const doc = await this.movieModel
-			.findByIdAndUpdate(id, { rating: newRating }, { new: true })
-			.exec()
 		if (!doc) throw new NotFoundException('Movie not found')
 		return doc
 	}
