@@ -52,13 +52,8 @@ export class MovieService {
 	async byGenres(
 		genreIds: Types.ObjectId[]
 	): Promise<DocumentType<MovieModel>[]> {
-		const docs = await this.movieModel
-			.find({ genres: { $in: genreIds } })
-			.exec()
-		if (docs.length == 0) throw new NotFoundException('Movies not found')
-		return docs
+		return this.movieModel.find({ genres: { $in: genreIds } }).exec()
 	}
-
 	async updateCountOpened(slug: string) {
 		const doc = await this.movieModel
 			.findOneAndUpdate(
