@@ -1,0 +1,9 @@
+.navigation {
+	@apply py-layout;
+}
+.navigation {
+	overflow: hidden;
+}
+.navigation::-webkit-scrollbar {
+	width: 0px;
+}
